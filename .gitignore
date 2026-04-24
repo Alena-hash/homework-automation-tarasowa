@@ -207,3 +207,17 @@ marimo/_lsp/
 __marimo__/
 
 *.exe
+
+# Отчеты Allure
+allure-results/
+allure-report/
+test_reports/
+
+# Секретные файлы с ключами (если решишь их спрятать)
+.env
+config_env.py
+config.py
+
+# Файлы операционной системы
+.DS_Store
+Thumbs.db

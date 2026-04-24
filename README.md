@@ -1,17 +1,75 @@
-# homework-automation-tarasowa
-# Aviasales UI & API Automation Tests
+## homework-automation-tarasowa
+
+![Python](https://img.shields.io/badge/python-3.14+-blue.svg)
+![Selenium](https://img.shields.io/badge/selenium-4.39.0-green.svg)
+![Pytest](https://img.shields.io/badge/pytest-9.0.2-orange.svg)
+![Allure](https://img.shields.io/badge/allure-2.15.3-red.svg)
 
 Проект автоматизированного тестирования UI и API сервиса Aviasales.
 
-## Стек
-- Python
-- Pytest
-- Selenium
-- Requests
-- Allure
-- Python-dotenv
+## Основные возможности
+- **UI Тестирование**: Автоматизация сценариев поиска билетов и отелей с использованием Selenium.
+- **API Тестирование**: Комплексная проверка эндпоинтов поиска (валидация данных, методы, авторизация).
+- **Allure Reporting**: Интеграция с системой отчетов для визуализации шагов и результатов.
+- **Robust Logic**: Использование явных ожиданий и обработка исключений для стабильности в динамической среде.
 
-##  Установка
+## 📂 Структура проекта
+```text
+aviasales-automation/
+├── config.py           # Конфигурация: BASE_URL, HEADERS, токены
+├── test_api.py         # Тесты API (Requests + Pytest)
+├── test_ui.py          # Тесты UI (Selenium + WebDriverWait)
+├── requirements.txt    # Зависимости проекта (selenium, pytest, requests, allure-pytest)
+└── pytest.ini          # Настройки маркеров (ui, api)
+```
 
-```bash
-pip install -r requirements.txt
+## 🛠 Технологический стек
+- **Python 3.10+**
+- **Pytest** — основной фреймворк для запуска тестов.
+- **Selenium WebDriver** — управление браузером.
+- **Requests** — выполнение HTTP-запросов.
+- **Allure** — генерация отчетов о тестировании.
+
+## 📋 Реализованные сценарии
+
+### UI Тестирование (Selenium)
+- **Поиск по коду IATA**: Ввод направления (ARH), выбор конкретной даты в будущем (Апрель 2026).
+- **Сложные календари**: Выбор интервалов дат заезда и выезда для отелей в разных месяцах.
+- **Стабильный ввод**: Посимвольная имитация печати текста для корректной активации выпадающих списков.
+- **Управление состоянием**: Автоматическое отключение лишних чекбоксов (например, поиск отелей Островок).
+
+### API Тестирование (Requests)
+- **Валидация поиска**: Проверки на кириллице, латинице, а также обработка запросов с цифрами.
+- **Негативные сценарии**: 
+    - Обработка пустых поисковых запросов (Error 400).
+    - Проверка безопасности: запросы с невалидными токенами или их отсутствием.
+    - Контроль методов: поведение API при использовании неверных HTTP-методов (PUT/POST).
+
+## ⚙️ Запуск тестов
+
+1. **Установка зависимостей**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Запуск тестов с генерацией отчета**:
+   ```bash
+   # Запустить всё
+   pytest --alluredir=allure-results
+
+   # Только API тесты
+   pytest -m api --alluredir=allure-results
+
+   # Только UI тесты
+   pytest -m ui --alluredir=allure-results
+   ```
+
+3. **Просмотр отчета**:
+   ```bash
+   allure serve allure-results
+   ```
+
+## 💡 Технические особенности
+- **Обработка Stale Elements**: В коде реализованы механизмы повторных попыток поиска элементов при их обновлении на странице (через `ignored_exceptions`).
+- **Явные ожидания**: Вместо ненадежных `time.sleep` используются `WebDriverWait` и условия `EC`.
+- **Типизация**: API-тесты снабжены аннотациями типов (`Dict`, `List`, `Any`) для повышения надежности кода.
